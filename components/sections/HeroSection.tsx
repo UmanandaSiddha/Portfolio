@@ -16,27 +16,37 @@ const Beams = dynamic(() => import('@/components/ui/Beams'), {
 
 const HeroSection = memo(() => {
 	const [isHeroVisible, setIsHeroVisible] = useState(false);
+	const [isMobile, setIsMobile] = useState(false);
 
 	useEffect(() => {
+		// Check if mobile on mount
+		const checkMobile = () => {
+			setIsMobile(window.innerWidth < 768);
+		};
+
+		checkMobile();
+		window.addEventListener('resize', checkMobile);
+
 		const heroElement = document.getElementById('hero');
 		if (!heroElement) return;
 
-		// Disable Beams on mobile devices
-		const isMobile = window.innerWidth < 768;
-
 		const observer = new IntersectionObserver(
 			([entry]) => {
+				// Only animate on desktop
 				setIsHeroVisible(entry.isIntersecting && !isMobile);
 			},
 			{ threshold: 0.1 }
 		);
 
 		observer.observe(heroElement);
-		return () => observer.disconnect();
-	}, []);
+		return () => {
+			observer.disconnect();
+			window.removeEventListener('resize', checkMobile);
+		};
+	}, [isMobile]);
 	return (
 		<section id="hero" className="relative min-h-screen flex flex-col items-center justify-center px-4 py-20 overflow-hidden">
-			{/* Background Beams - Only in Hero */}
+			{/* Background Beams - Animated on Desktop, Static on Mobile */}
 			<div className="absolute inset-0 w-full h-full z-0">
 				<Beams
 					beamWidth={3}
