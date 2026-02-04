@@ -2,7 +2,7 @@ import { forwardRef, useImperativeHandle, useEffect, useRef, useMemo, FC, ReactN
 
 import * as THREE from 'three';
 
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { PerspectiveCamera } from '@react-three/drei';
 import { degToRad } from 'three/src/math/MathUtils.js';
 
@@ -75,11 +75,36 @@ function extendMaterial<T extends THREE.Material = THREE.Material>(
     return mat;
 }
 
-const CanvasWrapper: FC<{ children: ReactNode; shouldAnimate?: boolean }> = ({ children, shouldAnimate = true }) => (
-    <Canvas dpr={[1, 2]} frameloop={shouldAnimate ? "always" : "never"} className="w-full h-full relative">
-        {children}
-    </Canvas>
-);
+const CanvasWrapper: FC<{ children: ReactNode; shouldAnimate?: boolean }> = ({ children, shouldAnimate = true }) => {
+    return (
+        <Canvas
+            dpr={[1, 2]}
+            frameloop={shouldAnimate ? "always" : "demand"}
+            className="w-full h-full relative"
+        >
+            <ForceInitialRender shouldAnimate={shouldAnimate} />
+            {children}
+        </Canvas>
+    );
+};
+
+// Component to force initial render when using demand frameloop
+const ForceInitialRender: FC<{ shouldAnimate: boolean }> = ({ shouldAnimate }) => {
+    const { advance, invalidate } = useThree();
+
+    useEffect(() => {
+        if (!shouldAnimate) {
+            // Force render on mount and after a short delay
+            invalidate();
+            const timer = setTimeout(() => {
+                advance(performance.now());
+            }, 100);
+            return () => clearTimeout(timer);
+        }
+    }, [shouldAnimate, advance, invalidate]);
+
+    return null;
+};
 
 const hexToNormalizedRGB = (hex: string): [number, number, number] => {
     const clean = hex.replace('#', '');
@@ -195,34 +220,34 @@ const Beams: FC<BeamsProps> = ({
         () =>
             extendMaterial(THREE.MeshStandardMaterial, {
                 header: `
-  varying vec3 vEye;
-  varying float vNoise;
-  varying vec2 vUv;
-  varying vec3 vPosition;
-  uniform float time;
-  uniform float uSpeed;
-  uniform float uNoiseIntensity;
-  uniform float uScale;
-  ${noise}`,
+                varying vec3 vEye;
+                varying float vNoise;
+                varying vec2 vUv;
+                varying vec3 vPosition;
+                uniform float time;
+                uniform float uSpeed;
+                uniform float uNoiseIntensity;
+                uniform float uScale;
+                ${noise}`,
                 vertexHeader: `
-  float getPos(vec3 pos) {
-    vec3 noisePos =
-      vec3(pos.x * 0., pos.y - uv.y, pos.z + time * uSpeed * 3.) * uScale;
-    return cnoise(noisePos);
-  }
-  vec3 getCurrentPos(vec3 pos) {
-    vec3 newpos = pos;
-    newpos.z += getPos(pos);
-    return newpos;
-  }
-  vec3 getNormal(vec3 pos) {
-    vec3 curpos = getCurrentPos(pos);
-    vec3 nextposX = getCurrentPos(pos + vec3(0.01, 0.0, 0.0));
-    vec3 nextposZ = getCurrentPos(pos + vec3(0.0, -0.01, 0.0));
-    vec3 tangentX = normalize(nextposX - curpos);
-    vec3 tangentZ = normalize(nextposZ - curpos);
-    return normalize(cross(tangentZ, tangentX));
-  }`,
+                float getPos(vec3 pos) {
+                    vec3 noisePos =
+                    vec3(pos.x * 0., pos.y - uv.y, pos.z + time * uSpeed * 3.) * uScale;
+                    return cnoise(noisePos);
+                }
+                vec3 getCurrentPos(vec3 pos) {
+                    vec3 newpos = pos;
+                    newpos.z += getPos(pos);
+                    return newpos;
+                }
+                vec3 getNormal(vec3 pos) {
+                    vec3 curpos = getCurrentPos(pos);
+                    vec3 nextposX = getCurrentPos(pos + vec3(0.01, 0.0, 0.0));
+                    vec3 nextposZ = getCurrentPos(pos + vec3(0.0, -0.01, 0.0));
+                    vec3 tangentX = normalize(nextposX - curpos);
+                    vec3 tangentZ = normalize(nextposZ - curpos);
+                    return normalize(cross(tangentZ, tangentX));
+                }`,
                 fragmentHeader: '',
                 vertex: {
                     '#include <begin_vertex>': `transformed.z += getPos(transformed.xyz);`,
@@ -230,8 +255,8 @@ const Beams: FC<BeamsProps> = ({
                 },
                 fragment: {
                     '#include <dithering_fragment>': `
-    float randomNoise = noise(gl_FragCoord.xy);
-    gl_FragColor.rgb -= randomNoise / 15. * uNoiseIntensity;`
+                    float randomNoise = noise(gl_FragCoord.xy);
+                    gl_FragColor.rgb -= randomNoise / 15. * uNoiseIntensity;`
                 },
                 material: { fog: true },
                 uniforms: {

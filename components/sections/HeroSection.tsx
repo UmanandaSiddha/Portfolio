@@ -32,8 +32,7 @@ const HeroSection = memo(() => {
 
 		const observer = new IntersectionObserver(
 			([entry]) => {
-				// Only animate on desktop
-				setIsHeroVisible(entry.isIntersecting && !isMobile);
+				setIsHeroVisible(entry.isIntersecting);
 			},
 			{ threshold: 0.1 }
 		);
@@ -43,7 +42,7 @@ const HeroSection = memo(() => {
 			observer.disconnect();
 			window.removeEventListener('resize', checkMobile);
 		};
-	}, [isMobile]);
+	}, []);
 	return (
 		<section id="hero" className="relative min-h-screen flex flex-col items-center justify-center px-4 py-20 overflow-hidden">
 			{/* Background Beams - Animated on Desktop, Static on Mobile */}
@@ -57,7 +56,7 @@ const HeroSection = memo(() => {
 					noiseIntensity={1.5}
 					scale={0.15}
 					rotation={30}
-					shouldAnimate={isHeroVisible}
+					shouldAnimate={isHeroVisible && !isMobile}
 				/>
 			</div>
 
