@@ -2,31 +2,9 @@
 
 import { memo } from 'react';
 import { FiBriefcase, FiCalendar, FiArrowRight } from 'react-icons/fi';
+import { siteConfig } from '@/lib/siteConfig';
 
 const ExperienceSection = memo(() => {
-	const experiences = [
-		{
-			title: 'Software Engineer',
-			company: 'Upesto',
-			period: 'Nov 2024 - Oct 2025',
-			description: [
-				'Developed and maintained scalable web applications using React and Node.js',
-				'Collaborated with cross-functional teams to deliver high-quality software solutions',
-				'Implemented best practices for code quality and performance optimization'
-			]
-		},
-		{
-			title: 'Backend Developer Intern',
-			company: 'Vrixaa Labs',
-			period: 'Aug 2024 – Jan 2025',
-			description: [
-				'Built robust backend APIs and services with Node.js and Express',
-				'Worked on database design and optimization using MongoDB and PostgreSQL',
-				'Gained hands-on experience with modern backend technologies and best practices'
-			]
-		}
-	];
-
 	return (
 		<section id="experience" className="relative z-10 bg-black min-h-screen flex items-center justify-center px-4 py-20 md:py-24 overflow-hidden">
 			{/* Subtle background gradient */}
@@ -38,14 +16,14 @@ const ExperienceSection = memo(() => {
 				<div className="flex items-center justify-center md:justify-start gap-3 mb-4">
 					<FiBriefcase className="w-8 h-8 text-violet-400" />
 					<h2 className="text-4xl md:text-5xl font-bold text-white font-display">
-						Experience
+						{siteConfig.sections.experience.title}
 					</h2>
 				</div>
 				<div className="w-12 h-1 bg-gradient-to-r from-violet-600 to-violet-400 mb-8 md:mb-12 md:ml-0 mx-auto md:mx-0"></div>
 
 				{/* Experience Cards */}
 				<div className="space-y-6">
-					{experiences.map((exp, idx) => (
+					{siteConfig.experience.map((exp, idx) => (
 						<div key={idx} className="group">
 							<div className="bg-gradient-to-br from-white/10 to-white/5 border border-white/10 hover:border-violet-500/30 rounded-lg p-6 md:p-8 transition-colors duration-300">
 								{/* Header */}

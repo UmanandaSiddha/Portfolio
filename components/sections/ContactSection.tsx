@@ -1,6 +1,7 @@
 'use client';
 
 import { memo } from 'react';
+import { siteConfig } from '@/lib/siteConfig';
 
 const ContactSection = memo(() => {
 	return (
@@ -11,38 +12,30 @@ const ContactSection = memo(() => {
 
 			<div className="max-w-2xl w-full text-center animate-on-scroll relative z-10">
 				<h2 className="text-4xl md:text-5xl font-bold mb-6 md:mb-8 text-white font-display">
-					Get In Touch
+					{siteConfig.sections.contact.title}
 				</h2>
 				<p className="text-base md:text-lg lg:text-xl text-gray-300 mb-8 md:mb-12 leading-relaxed">
-					I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
+					{siteConfig.contact.description}
 				</p>
 				<div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 mb-8 md:mb-12">
-					<a
-						href="mailto:umanandasiddha243@gmail.com"
-						className="px-6 md:px-8 py-3 bg-white text-black rounded-lg font-semibold hover:bg-gray-200 transition-colors text-sm md:text-base"
-					>
-						Email Me
-					</a>
-					<a
-						href="https://github.com/UmanandaSiddha"
-						target="_blank"
-						rel="noopener noreferrer"
-						className="px-6 md:px-8 py-3 border-2 border-white/30 text-white rounded-lg font-semibold hover:border-white/50 transition-colors text-sm md:text-base"
-					>
-						GitHub
-					</a>
-					<a
-						href="https://linkedin.com/in/umananda-siddha-399b95217"
-						target="_blank"
-						rel="noopener noreferrer"
-						className="px-6 md:px-8 py-3 border-2 border-white/30 text-white rounded-lg font-semibold hover:border-white/50 transition-colors text-sm md:text-base"
-					>
-						LinkedIn
-					</a>
+					{siteConfig.contact.ctas.map((cta) => (
+						<a
+							key={cta.label}
+							href={cta.href}
+							target={cta.href.startsWith('http') ? '_blank' : undefined}
+							rel={cta.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+							className={cta.variant === 'primary'
+								? 'px-6 md:px-8 py-3 bg-white text-black rounded-lg font-semibold hover:bg-gray-200 transition-colors text-sm md:text-base'
+								: 'px-6 md:px-8 py-3 border-2 border-white/30 text-white rounded-lg font-semibold hover:border-white/50 transition-colors text-sm md:text-base'
+							}
+						>
+							{cta.label}
+						</a>
+					))}
 				</div>
 				<div className="text-gray-400 text-sm md:text-base space-y-2">
-					<p>Phone: +91 708 640 03 95</p>
-					<p>Bongaigaon, Assam, India</p>
+					<p>Phone: {siteConfig.personal.phone}</p>
+					<p>{siteConfig.personal.location.city}, {siteConfig.personal.location.region}, {siteConfig.personal.location.country}</p>
 				</div>
 			</div>
 		</section>

@@ -1,47 +1,40 @@
 'use client';
 
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss, SiNodedotjs, SiPostgresql, SiMongodb, SiDocker } from 'react-icons/si';
+import { SiReact, SiNextdotjs, SiTypescript, SiNodedotjs, SiPostgresql, SiMongodb, SiDocker, SiAmazon } from 'react-icons/si';
 import { FiArrowRight } from 'react-icons/fi';
+import { siteConfig } from '@/lib/siteConfig';
 
 // Lazy load LogoLoop
 const LogoLoop = dynamic(() => import('@/components/ui/LogoLoop').then(mod => ({ default: mod.default })), {
 	ssr: false
 });
 
-const techLogos = [
-	{ node: <SiReact />, title: "React", href: "https://react.dev" },
-	{ node: <SiNextdotjs />, title: "Next.js", href: "https://nextjs.org" },
-	{ node: <SiTypescript />, title: "TypeScript", href: "https://www.typescriptlang.org" },
-	{ node: <SiTailwindcss />, title: "Tailwind CSS", href: "https://tailwindcss.com" },
-	{ node: <SiNodedotjs />, title: "Node.js", href: "https://nodejs.org" },
-	{ node: <SiPostgresql />, title: "PostgreSQL", href: "https://www.postgresql.org" },
-	{ node: <SiMongodb />, title: "MongoDB", href: "https://www.mongodb.com" },
-	{ node: <SiDocker />, title: "Docker", href: "https://www.docker.com" },
-];
-
-const skillCategories = [
-	{
-		title: 'Languages',
-		skills: ['JavaScript', 'TypeScript', 'Python', 'Java', 'C++', 'SQL'],
-	},
-	{
-		title: 'Frontend',
-		skills: ['React', 'Next.js', 'Tailwind CSS', 'HTML/CSS', 'Redux', 'Framer Motion'],
-	},
-	{
-		title: 'Backend',
-		skills: ['Node.js', 'Express.js', 'REST APIs', 'GraphQL', 'Microservices', 'System Design'],
-	},
-	{
-		title: 'Databases & Tools',
-		skills: ['MongoDB', 'PostgreSQL', 'MySQL', 'Redis', 'Docker', 'AWS'],
-	},
-];
+const techIconMap = {
+	react: <SiReact />,
+	next: <SiNextdotjs />,
+	typescript: <SiTypescript />,
+	node: <SiNodedotjs />,
+	postgres: <SiPostgresql />,
+	mongo: <SiMongodb />,
+	docker: <SiDocker />,
+	aws: <SiAmazon />
+};
 
 const SkillsSection = memo(() => {
 	const [isScrolling, setIsScrolling] = useState(false);
+	const techLogos = useMemo(
+		() =>
+			siteConfig.skills.techStack
+				.map((logo) => ({
+					node: techIconMap[logo.key as keyof typeof techIconMap],
+					title: logo.label,
+					href: logo.href
+				}))
+				.filter((logo) => Boolean(logo.node)),
+		[]
+	);
 
 	useEffect(() => {
 		let scrollTimer: NodeJS.Timeout;
@@ -82,7 +75,7 @@ const SkillsSection = memo(() => {
 			>
 				<div className="max-w-6xl mx-auto px-4">
 					<p className="text-center text-white/60 text-sm md:text-base font-medium mb-8">
-						Tech Stack & Tools
+						{siteConfig.sections.skills.loopLabel}
 					</p>
 					<LogoLoop
 						logos={techLogos}
@@ -107,22 +100,22 @@ const SkillsSection = memo(() => {
 
 				<div className="max-w-6xl w-full animate-on-scroll visible relative z-10">
 					<div className="flex items-center justify-center gap-3 mb-8">
-						<div className="w-12 h-1 bg-gradient-to-r from-violet-600 to-violet-400"></div>
-						<h2 className="text-4xl md:text-5xl font-bold text-white font-display">Skills</h2>
-						<div className="w-12 h-1 bg-gradient-to-l from-violet-600 to-violet-400"></div>
+						<div className="w-12 h-1 bg-linear-to-r from-violet-600 to-violet-400"></div>
+						<h2 className="text-4xl md:text-5xl font-bold text-white font-display">{siteConfig.sections.skills.title}</h2>
+						<div className="w-12 h-1 bg-linear-to-l from-violet-600 to-violet-400"></div>
 					</div>
 					<p className="text-center text-white/60 mb-12 md:mb-16 max-w-2xl mx-auto text-base md:text-lg">
-						My technical expertise spans across modern web development, from frontend frameworks to backend architectures and cloud infrastructure.
+						{siteConfig.sections.skills.intro}
 					</p>
 
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-						{skillCategories.map((category) => (
+						{siteConfig.skills.categories.map((category) => (
 							<div
 								key={category.title}
 								className="group relative"
 							>
 								{/* Animated border */}
-								<div className="absolute -inset-0.5 bg-gradient-to-r from-violet-600/20 to-violet-600/10 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+								<div className="absolute -inset-0.5 bg-linear-to-r from-violet-600/20 to-violet-600/10 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
 								<div className="relative bg-white/5 border border-white/10 group-hover:border-violet-500/30 rounded-lg p-6 transition-all duration-300 h-full">
 									<div className="flex items-center gap-2 mb-4">

@@ -17,10 +17,10 @@ const Navbar = memo(() => {
                 {/* Navigation Links */}
                 <div className="flex items-center gap-6 md:gap-8">
                     <Link
-                        href="/blogs"
+                        href="/blog"
                         className="text-sm md:text-base text-white/80 hover:text-violet-400 transition-colors duration-300 font-medium"
                     >
-                        Blogs
+                        Blog
                     </Link>
                 </div>
             </div>

@@ -1,7 +1,8 @@
 'use client';
 
 import { memo } from 'react';
-import { FiUser, FiAward, FiMapPin } from 'react-icons/fi';
+import { FiUser, FiAward, FiMapPin, FiStar } from 'react-icons/fi';
+import { siteConfig } from '@/lib/siteConfig';
 
 const AboutSection = memo(() => {
 	return (
@@ -15,19 +16,17 @@ const AboutSection = memo(() => {
 				<div className="flex items-center justify-center md:justify-start gap-3 mb-4">
 					<FiUser className="w-8 h-8 text-violet-400" />
 					<h2 className="text-4xl md:text-5xl font-bold text-white font-display">
-						About Me
+						{siteConfig.sections.about.title}
 					</h2>
 				</div>
 				<div className="w-12 h-1 bg-gradient-to-r from-violet-600 to-violet-400 mb-8 md:mb-12 md:ml-0 mx-auto md:mx-0"></div>
 
 				<div className="text-center md:text-left">
-					<p className="text-base md:text-lg lg:text-xl text-gray-300 leading-relaxed mb-6">
-						I'm a passionate Software Engineer with expertise in full-stack development, currently pursuing my B.Tech in Electronics and Communication Engineering at Tezpur University.
-						I specialize in building scalable web applications using modern technologies and have experience working with both startups and established companies.
-					</p>
-					<p className="text-base md:text-lg lg:text-xl text-gray-300 leading-relaxed mb-8">
-						With a strong foundation in backend development and a keen eye for frontend design, I create seamless user experiences that combine functionality with aesthetics.
-					</p>
+					{siteConfig.about.summary.map((paragraph) => (
+						<p key={paragraph} className="text-base md:text-lg lg:text-xl text-gray-300 leading-relaxed mb-6">
+							{paragraph}
+						</p>
+					))}
 
 					{/* Info Cards Grid */}
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -37,9 +36,9 @@ const AboutSection = memo(() => {
 								<FiAward className="w-6 h-6 text-violet-400 group-hover:scale-110 transition-transform duration-300" />
 								<h3 className="text-lg md:text-xl font-semibold text-white">Education</h3>
 							</div>
-							<p className="text-gray-300 font-medium">Tezpur University</p>
-							<p className="text-gray-400 text-sm mt-1">B.Tech in ECE (2022 - 2026)</p>
-							<p className="text-gray-400 text-sm">GPA: 7.6/10</p>
+							<p className="text-gray-300 font-medium">{siteConfig.about.education.school}</p>
+							<p className="text-gray-400 text-sm mt-1">{siteConfig.about.education.degree} ({siteConfig.about.education.period})</p>
+							<p className="text-gray-400 text-sm">GPA: {siteConfig.about.education.gpa}</p>
 						</div>
 
 						{/* Location Card */}
@@ -48,8 +47,20 @@ const AboutSection = memo(() => {
 								<FiMapPin className="w-6 h-6 text-violet-400 group-hover:scale-110 transition-transform duration-300" />
 								<h3 className="text-lg md:text-xl font-semibold text-white">Location</h3>
 							</div>
-							<p className="text-gray-300 font-medium">Bongaigaon, Assam</p>
-							<p className="text-gray-400 text-sm mt-1">India</p>
+							<p className="text-gray-300 font-medium">{siteConfig.personal.location.city}, {siteConfig.personal.location.region}</p>
+							<p className="text-gray-400 text-sm mt-1">{siteConfig.personal.location.country}</p>
+						</div>
+
+						<div className="group bg-gradient-to-br from-white/10 to-white/5 border border-white/10 hover:border-violet-500/30 rounded-lg p-6 transition-colors duration-300 md:col-span-2">
+							<div className="flex items-center gap-3 mb-4">
+								<FiStar className="w-6 h-6 text-violet-400 group-hover:scale-110 transition-transform duration-300" />
+								<h3 className="text-lg md:text-xl font-semibold text-white">Achievements</h3>
+							</div>
+							<ul className="space-y-2">
+								{siteConfig.about.achievements.map((achievement) => (
+									<li key={achievement} className="text-gray-300 text-sm">{achievement}</li>
+								))}
+							</ul>
 						</div>
 					</div>
 				</div>

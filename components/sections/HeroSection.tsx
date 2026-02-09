@@ -6,7 +6,9 @@ import SplitText from "@/components/ui/SplitText";
 import DecayCard from "@/components/ui/DecayCard";
 import RotatingText from '@/components/ui/RotatingText';
 import { DefaultDP } from "@/assets";
-import { SiInstagram, SiLinkedin, SiGithub } from 'react-icons/si';
+import { siteConfig } from '@/lib/siteConfig';
+import { SiLinkedin, SiGithub, SiInstagram } from 'react-icons/si';
+import { FaXTwitter } from 'react-icons/fa6';
 
 // Lazy load Beams only when needed
 const Beams = dynamic(() => import('@/components/ui/Beams'), {
@@ -17,6 +19,21 @@ const Beams = dynamic(() => import('@/components/ui/Beams'), {
 const HeroSection = memo(() => {
 	const [isHeroVisible, setIsHeroVisible] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
+	const socialIcons = {
+		instagram: SiInstagram,
+		linkedin: SiLinkedin,
+		x: FaXTwitter,
+		github: SiGithub
+	};
+
+	const handlePrimaryCtaClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+		event.preventDefault();
+		const targetId = siteConfig.hero.primaryCta.href.replace('#', '');
+		const element = document.getElementById(targetId);
+		if (element) {
+			element.scrollIntoView({ behavior: 'smooth' });
+		}
+	};
 
 	useEffect(() => {
 		// Check if mobile on mount
@@ -69,9 +86,9 @@ const HeroSection = memo(() => {
 				{/* Hero Text */}
 				<div className="relative z-10 order-1 md:order-2 text-center md:text-left flex-1">
 					<div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-4 md:gap-4">
-						<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold font-display text-white">I'm a</h2>
+						<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold font-display text-white">{siteConfig.hero.intro}</h2>
 						<RotatingText
-							texts={['Developer', 'Engineer', 'Creator', 'Innovator']}
+							texts={[...siteConfig.hero.roles]}
 							mainClassName="px-5 md:px-6 lg:px-8 bg-gradient-to-r from-violet-600 to-violet-500 hover:from-violet-500 hover:to-violet-400 text-white overflow-hidden py-2 md:py-3 justify-center rounded-xl font-display font-bold text-2xl md:text-3xl lg:text-4xl shadow-lg shadow-violet-500/20"
 							staggerFrom={"last"}
 							initial={{ y: "100%", opacity: 0 }}
@@ -85,7 +102,7 @@ const HeroSection = memo(() => {
 					</div>
 					<div className="text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.5)] flex flex-col md:flex-row items-center md:items-start gap-3 md:gap-4 mb-6">
 						<SplitText
-							text="Umananda Siddha"
+							text={siteConfig.personal.name}
 							className="text-4xl md:text-6xl lg:text-7xl font-bold text-white"
 							delay={50}
 							duration={1.25}
@@ -100,61 +117,51 @@ const HeroSection = memo(() => {
 					</div>
 					<div className="space-y-4 mt-6 [text-shadow:0_2px_8px_rgba(0,0,0,0.5)]">
 						<p className="text-lg md:text-xl text-white max-w-xl mx-auto md:mx-0 font-medium">
-							Software Engineer & Full Stack Developer
+							{siteConfig.personal.title}
 						</p>
 						{/* <p className="text-base md:text-lg text-gray-100 max-w-xl mx-auto md:mx-0">
 							B.Tech in Electronics and Communication Engineering
 						</p> */}
 						<p className="text-sm md:text-base text-gray-200 max-w-xl mx-auto md:mx-0">
-							Bongaigaon, Assam, India
+							{siteConfig.personal.location.city}, {siteConfig.personal.location.region}, {siteConfig.personal.location.country}
 						</p>
 					</div>
 
 					{/* CTA Buttons */}
 					<div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 mt-8">
 						<a
-							href="#about"
+							href={siteConfig.hero.primaryCta.href}
+							onClick={handlePrimaryCtaClick}
 							className="px-8 py-3 bg-linear-to-r from-violet-600 to-violet-500 hover:from-violet-500 hover:to-violet-400 text-white font-semibold rounded-lg transition-all duration-300 shadow-lg shadow-violet-500/30 hover:shadow-violet-500/50 hover:scale-105 text-center"
 						>
-							View My Work
+							{siteConfig.hero.primaryCta.label}
 						</a>
 						<a
-							href="/resume.pdf"
+							href={siteConfig.hero.secondaryCta.href}
 							className="px-8 py-3 border-2 border-white/30 text-white font-semibold rounded-lg hover:border-white/60 hover:text-white transition-all duration-300 text-center"
 						>
-							Download Resume
+							{siteConfig.hero.secondaryCta.label}
 						</a>
 					</div>
 
 					{/* Social Icons */}
 					<div className='flex items-center justify-center md:justify-start gap-4 md:gap-6 mt-6'>
-						<a
-							href="https://instagram.com"
-							target="_blank"
-							rel="noopener noreferrer"
-							className="text-white/80 hover:text-white transition-all duration-300 hover:scale-110"
-							aria-label="Instagram"
-						>
-							<SiInstagram className="w-6 h-6 md:w-7 md:h-7" />
-						</a>
-						<a
-							href="https://linkedin.com/in/umananda-siddha-399b95217"
-							target="_blank"
-							rel="noopener noreferrer"
-							className="text-white/80 hover:text-white transition-all duration-300 hover:scale-110"
-							aria-label="LinkedIn"
-						>
-							<SiLinkedin className="w-6 h-6 md:w-7 md:h-7" />
-						</a>
-						<a
-							href="https://github.com/UmanandaSiddha"
-							target="_blank"
-							rel="noopener noreferrer"
-							className="text-white/80 hover:text-white transition-all duration-300 hover:scale-110"
-							aria-label="GitHub"
-						>
-							<SiGithub className="w-6 h-6 md:w-7 md:h-7" />
-						</a>
+						{siteConfig.hero.socials.map((social) => {
+							const Icon = socialIcons[social.platform as keyof typeof socialIcons];
+							if (!Icon) return null;
+							return (
+								<a
+									key={social.platform}
+									href={social.href}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="text-white/80 hover:text-white transition-all duration-300 hover:scale-110"
+									aria-label={social.label}
+								>
+									<Icon className="w-6 h-6 md:w-7 md:h-7" />
+								</a>
+							);
+						})}
 					</div>
 				</div>
 			</div>
