@@ -8,7 +8,7 @@ export const siteConfig = {
             country: 'India'
         },
         email: 'umanandasiddha243@gmail.com',
-        phone: '+91 708 640 03 95',
+        phone: '+91 70864 00395',
         website: 'https://umanandasiddha.vercel.app',
         resumeUrl: '/resume.pdf'
     },
