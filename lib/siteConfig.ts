@@ -128,6 +128,30 @@ export const siteConfig = {
     ],
     projects: [
         {
+            title: 'Ovlox (Work Project)',
+            description:
+                'A project-tracking platform for non-technical founders to monitor execution and delivery. Connects GitHub, Slack, Discord, Jira, and Linear, and provides a RAG-based Q&A layer over unified project context.',
+            technologies: ['NestJS', 'PostgreSQL', 'Next.js', 'RAG', 'Integrations'],
+            github: undefined,
+            demo: 'https://ovlox.dev'
+        },
+        {
+            title: 'Savora Eats (Upesto) (Work Project)',
+            description:
+                'Production food delivery platform backend focused on performance, geo-search, and scalable media handling. Built APIs with caching, async jobs, and PostGIS-powered location features.',
+            technologies: ['NestJS', 'PostgreSQL', 'PostGIS', 'Redis', 'BullMQ', 'AWS S3'],
+            github: undefined,
+            demo: 'https://savoraeats.com'
+        },
+        {
+            title: 'Voolata (Evool Foundation) (Freelance)',
+            description:
+                'Fundraising platform supporting one-time and subscription donations. Built secure Razorpay payment flows with webhook verification and QR-based campaign pages.',
+            technologies: ['MongoDB', 'Express', 'React', 'Node.js', 'Razorpay'],
+            github: 'https://github.com/UmanandaSiddha/Application',
+            demo: 'https://voolata.com'
+        },
+        {
             title: 'Media Server (WebRTC + Mediasoup)',
             description: 'A multi-user video conferencing system using WebRTC with a mediasoup SFU for scalable real-time communication.',
             technologies: ['WebRTC', 'mediasoup', 'WebSockets', 'Node.js'],
