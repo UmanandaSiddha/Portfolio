@@ -153,7 +153,7 @@ export const siteConfig = {
         },
         {
             title: 'Media Server (WebRTC + Mediasoup)',
-            description: 'A multi-user video conferencing system using WebRTC with a mediasoup SFU for scalable real-time communication.',
+            description: 'A Google Meet-style multi-user video conferencing system built with WebRTC and a mediasoup SFU. Supports real-time signaling via WebSockets, room/session management, and scalable server-side media routing.',
             technologies: ['WebRTC', 'mediasoup', 'WebSockets', 'Node.js'],
             github: 'https://github.com/UmanandaSiddha/Media-Server-WebRTC',
             demo: undefined
